@@ -10,16 +10,18 @@ def main():
     X_train, labels, labels_onehot = preprocess("data/Xtr0.csv", "data/Xtr1.csv", "data/Xtr2.csv", labels_1="data/Ytr0.csv", labels_2="data/Ytr1.csv", labels_3="data/Ytr2.csv")
 
     # Training of the STAKING MODEL 
-    # base_models = [kernel_ridge_regression(lambda_=0.3, kernel='spectrum', num_classes=2, k=7),
-    #            kernel_logistic_regression(alpha0_coeff = 0, lambda_ = 5, k=3, kernel='spectrum', n_iter=10)]
-    # meta_model = kernel_ridge_regression(lambda_=0.15, kernel='linear', num_classes=1)
-    
-    # model = StackingModel(base_models, meta_model)
-    # model.fit(X_train, labels, labels_onehot)
+    base_models = [kernel_ridge_regression(lambda_=0.3, kernel='spectrum', num_classes=2, k=7),
+                kernel_logistic_regression(alpha0_coeff = 0, lambda_ = 10, k=3, kernel='spectrum', n_iter=100)]
+    meta_model = kernel_ridge_regression(lambda_=0.1, kernel='RBF', num_classes=2, sigma= 0.1, meta_mode=True)
+
+    model = StackingModel(base_models, meta_model)
+
+    model.fit(X_train, labels, labels_onehot)
+
 
     # Training of the KERNEL RIDGE REGRESSION MODEL WITH SPECTRUM KERNEL
-    model = kernel_ridge_regression(lambda_=0.3, kernel='spectrum', num_classes=2, k=7)
-    model.fit(X_train, labels_onehot)
+    #model = kernel_ridge_regression(lambda_=0.3, kernel='spectrum', num_classes=2, k=7)
+    #model.fit(X_train, labels_onehot)
 
     # Testing step
     X_test = preprocess("data/Xte0.csv", "data/Xte1.csv", "data/Xte2.csv", train=False)

@@ -5,7 +5,7 @@ from kernels import SpectrumKernel, GaussianKernel, LinearKernel
 
 class kernel_ridge_regression():
 
-    def __init__(self, lambda_=0.5, kernel='RBF', num_classes = 2, **kwargs):
+    def __init__(self, lambda_=0.5, kernel='RBF', num_classes = 2, meta_mode=False, **kwargs):
         self.lambda_ = lambda_
         self.kernel = kernel
         self.kernel_class = None
@@ -13,6 +13,7 @@ class kernel_ridge_regression():
         self.num_classes = num_classes
         self.X_train = list()
         self.alpha_matrix = list()
+        self.meta_mode = meta_mode
 
         
     def kernel_function(self, X):
@@ -100,7 +101,8 @@ class kernel_ridge_regression():
             if self.kernel == 'spectrum':
                 K_vector = self.kernel_vector(self.X_train, x_test[k])
 
-            elif self.kernel == 'linear':
+            # If we are using the ridge regression for the meta model
+            elif self.meta_mode:
                 K_vector = self.kernel_vector(self.X_train, X[k, :])
 
             else:

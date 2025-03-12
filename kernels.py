@@ -54,7 +54,10 @@ class GaussianKernel():
 
     def compute_kernel_matrix(self, X):
         
-        X_np = X.to_numpy() 
+        if isinstance(X, np.ndarray):
+            X_np = X  
+        else:
+            X_np = X.to_numpy()  
 
         # Computation of the square euclidean distance between each pair (i, j)
         X_sq = np.sum(X_np**2, axis=1)[:, np.newaxis]  
@@ -73,7 +76,14 @@ class GaussianKernel():
         n1, _ = X1.shape
         K = np.zeros((n1, 1))
 
-        return np.exp(-np.linalg.norm((X1-x2), axis=1) /(2 * self.sigma ** 2))
+        if isinstance(X1, np.ndarray):
+            X1_np = X1
+            X2_np = x2
+        else:
+            X1_np = X1.to_numpy() 
+            X2_np = x2.to_numpy()
+
+        return np.exp(-np.linalg.norm((X1_np-X2_np), axis=1) /(2 * self.sigma ** 2))
 
 class SpectrumKernel():
 

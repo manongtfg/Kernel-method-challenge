@@ -3,10 +3,9 @@ from models import kernel_ridge_regression, kernel_spectral_clustering, kernel_l
 
 class StackingModel:
 
-    def __init__(self, base_models, meta_model, **kwargs):
+    def __init__(self, base_models, meta_model):
         self.base_models = base_models  # List of base models
         self.meta_model = meta_model  # Final model
-        self.models_parameters = kwargs
     
     def fit(self, X, y_original, y_onehot):
         """
